@@ -21,3 +21,4 @@ Demo/Api/DogstarTest.php
 *.DS_Store
 
 .idea
+.vscode
