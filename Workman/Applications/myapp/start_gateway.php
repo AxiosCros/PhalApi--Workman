@@ -33,7 +33,7 @@ $gateway->lanIp =  $workman_config['lan_ip'];
 // 则一般会使用4000 4001 4002 4003 4个端口作为内部通讯端口 
 $gateway->startPort = $workman_config['start_port'];
 // 服务注册地址
-$gateway->registerAddress = "127.0.0.1:".$workman_config['service_port'];
+$gateway->registerAddress = $workman_config['lan_ip'].":".$workman_config['service_port'];
 
 // 心跳间隔
 $gateway->pingInterval = $workman_config['heartbeat'];

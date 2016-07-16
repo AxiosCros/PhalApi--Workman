@@ -27,7 +27,7 @@ $worker->name = $workman_config['app_name'];
 // bussinessWorker进程数量
 $worker->count = $workman_config['process_count'];
 // 服务注册地址
-$worker->registerAddress = "127.0.0.1:".$workman_config['service_port'];
+$worker->registerAddress = $workman_config['lan_ip'].":".$workman_config['service_port'];
 // 如果不是在根目录启动，则运行runAll方法
 if(!defined('GLOBAL_START')) {
     Worker::runAll();

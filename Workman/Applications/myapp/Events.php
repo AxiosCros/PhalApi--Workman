@@ -33,11 +33,13 @@ class Events
      */
     public static function onConnect($client_id) {
         echo "client:{$_SERVER['REMOTE_ADDR']}:{$_SERVER['REMOTE_PORT']} \n gateway:{$_SERVER['GATEWAY_ADDR']}:{$_SERVER['GATEWAY_PORT']}  \n client_id:$client_id \n session:".json_encode($_SESSION)." \n ";
-        $Connect = new Server_Container();
-        $re = $Connect->onConnect($client_id);
-        $data = json_encode($re['data']);
-        if($re['type'] =="single"){
+        $Connect = new Server_Container($client_id);
+        $re = $Connect->onConnect();
+        $data = is_array($re['data']) ?json_encode($re['data']) : $re['data'];
+        if($re['type'] =="present"){
             Gateway::sendToClient($client_id,$data);
+        }else if($re['type'] =="single"){
+            Gateway::sendToClient($re['clients'][0],$data);
         }else if($re['type']=="all"){
             GateWay::sendToAll($data);
         }else{
@@ -53,15 +55,17 @@ class Events
     * @param int $client_id 连接id
     * @param mixed $message 具体消息
     */
-   public static function onMessage($client_id, $message) {
+   public static function onMessage($client_id,$message) {
        echo "client:{$_SERVER['REMOTE_ADDR']}:{$_SERVER['REMOTE_PORT']} \n gateway:{$_SERVER['GATEWAY_ADDR']}:{$_SERVER['GATEWAY_PORT']}  \n client_id:$client_id \n session:".json_encode($_SESSION)." \n onMessage:".$message."\n";
        $message = json_decode($message,true);
 
-       $Connect = new Server_Container();
-       $re = $Connect->onMessage($client_id,$message);
-       $data = json_encode($re['data']);
-       if($re['type'] =="single"){
+       $Connect = new Server_Container($client_id, $message);
+       $re = $Connect->onMessage();
+       $data = is_array($re['data']) ?json_encode($re['data']) : $re['data'];
+       if($re['type'] =="present"){
            Gateway::sendToClient($client_id,$data);
+       }else if($re['type'] =="single"){
+           Gateway::sendToClient($re['clients'][0],$data);
        }else if($re['type']=="all"){
            GateWay::sendToAll($data);
        }else{
@@ -77,8 +81,22 @@ class Events
     * @param int $client_id 连接id
     */
    public static function onClose($client_id) {
-       $Connect = new Server_Container();
-       $Connect->onClose($client_id);
+       $Connect = new Server_Container($client_id);
+       $re = $Connect->onClose();
+       if(!empty($re)){
+           $data = is_array($re['data']) ?json_encode($re['data']) : $re['data'];
+           if($re['type'] =="present"){
+               Gateway::sendToClient($client_id,$data);
+           }else if($re['type'] =="single"){
+               Gateway::sendToClient($re['clients'][0],$data);
+           }else if($re['type']=="all"){
+               GateWay::sendToAll($data);
+           }else{
+               $clients = $re['clients'];
+               foreach($clients as $key=>$val){
+                   Gateway::sendToClient($val,$data);
+               }
+           }
+       }
    }
-
 }
