@@ -41,6 +41,7 @@ curl -Ss http://www.workerman.net/check.php | php
 > 在Publi目录下创建socket.php文件，代码内容如下
 
 ``` php
+<?php
 require_once dirname(__FILE__) . '/init.php';
 //装载你的接口
 DI()->loader->addDirs('Demo');
