@@ -38,7 +38,7 @@ curl -Ss http://www.workerman.net/check.php | php
 ```
 
 ### 编写入口文件
-> 在Publi目录下创建socket.php文件，代码内容如下
+> 在Public目录下创建socket.php文件，代码内容如下
 
 ``` php
 <?php
