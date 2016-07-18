@@ -18,6 +18,7 @@
  * 然后观察一段时间workerman.log看是否有process_timeout异常
  */
 use \GatewayWorker\Lib\Gateway;
+require_once dirname(__DIR__)."/../../../Public/socket.php";
 /**
  * 主逻辑
  * 主要是处理 onConnect onMessage onClose 三个方法
@@ -32,7 +33,12 @@ class Events
      * @param int $client_id 连接id
      */
     public static function onConnect($client_id) {
-        echo "client:{$_SERVER['REMOTE_ADDR']}:{$_SERVER['REMOTE_PORT']} \n gateway:{$_SERVER['GATEWAY_ADDR']}:{$_SERVER['GATEWAY_PORT']}  \n client_id:$client_id \n session:".json_encode($_SESSION)." \n ";
+        echo "==================================================================\n";
+        echo "type     ->connect\n";
+        echo "client   ->{$_SERVER['REMOTE_ADDR']}:{$_SERVER['REMOTE_PORT']} \n";
+        echo "client_id->$client_id \n";
+        echo "gateway  ->{$_SERVER['GATEWAY_ADDR']}:{$_SERVER['GATEWAY_PORT']}  \n";
+        echo "session  ->".json_encode($_SESSION)."\n";
         $Connect = new Server_Container($client_id);
         $re = $Connect->onConnect();
         $data = is_array($re['data']) ?json_encode($re['data']) : $re['data'];
@@ -48,6 +54,8 @@ class Events
                 Gateway::sendToClient($val,$data);
             }
         }
+        echo "server_response->".json_encode($re);
+        echo  "\n==================================================================\n";
     }
     
    /**
@@ -56,9 +64,17 @@ class Events
     * @param mixed $message 具体消息
     */
    public static function onMessage($client_id,$message) {
-       echo "client:{$_SERVER['REMOTE_ADDR']}:{$_SERVER['REMOTE_PORT']} \n gateway:{$_SERVER['GATEWAY_ADDR']}:{$_SERVER['GATEWAY_PORT']}  \n client_id:$client_id \n session:".json_encode($_SESSION)." \n onMessage:".$message."\n";
+       echo "type     ->message\n";
+       echo "client   ->{$_SERVER['REMOTE_ADDR']}:{$_SERVER['REMOTE_PORT']} \n";
+       echo "client_id->$client_id \n";
+       echo "gateway  ->{$_SERVER['GATEWAY_ADDR']}:{$_SERVER['GATEWAY_PORT']}  \n";
+       echo "session  ->".json_encode($_SESSION)."\n";
+       echo "client_message->".$message."\n";
        $message = json_decode($message,true);
-
+       if(is_null($message)){
+           //Gateway::closeClient($client_id);
+           Gateway::sendToClient($client_id,"data error!");
+       }
        $Connect = new Server_Container($client_id, $message);
        $re = $Connect->onMessage();
        $data = is_array($re['data']) ?json_encode($re['data']) : $re['data'];
@@ -74,6 +90,8 @@ class Events
                Gateway::sendToClient($val,$data);
            }
        }
+       echo "server_response->".json_encode($re);
+       echo  "\n==================================================================\n";
    }
    
    /**
@@ -81,7 +99,12 @@ class Events
     * @param int $client_id 连接id
     */
    public static function onClose($client_id) {
-       $Connect = new Server_Container($client_id);
+       echo "type     ->close\n";
+       echo "client   ->{$_SERVER['REMOTE_ADDR']}:{$_SERVER['REMOTE_PORT']} \n";
+       echo "client_id->$client_id \n";
+       echo "gateway  ->{$_SERVER['GATEWAY_ADDR']}:{$_SERVER['GATEWAY_PORT']}  \n";
+       echo "session  ->".json_encode($_SESSION)." \n";
+       $Connect = new Server_Container($client_id)."\n";
        $re = $Connect->onClose();
        if(!empty($re)){
            $data = is_array($re['data']) ?json_encode($re['data']) : $re['data'];
@@ -98,5 +121,7 @@ class Events
                }
            }
        }
+       echo "server_response->".json_encode($re);
+       echo  "\n==================================================================\n";
    }
 }
