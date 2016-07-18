@@ -7,7 +7,7 @@
 ## 检查环境
 curl -Ss http://www.workerman.net/check.php | php
 ```
-如果不全是ok的话，可以参考下面这篇博客安装php7运行环境
+如果不全是ok的话，可以参考我的这篇博客安装php7运行环境
 [Centos7安装nginx+php7运行环境](http://hanxv.cn/index.php/archives/19.html)
 
 ## 安装PhalApi-Workman扩展
@@ -20,7 +20,7 @@ curl -Ss http://www.workerman.net/check.php | php
 > 打开Config下的app.php配置文件
 ``` php
 //添加以下内容
-    'workman'=>array(
+'workman'=>array(
         'app_name'=>"my_app",                      // 项目应用名称
         'socket_host'=>"tcp://0.0.0.0:1212",       // socket连接监听地址及端口
         'service_port'=>"1238",                    // 服务注册端口，未占用的话无需修改
@@ -29,10 +29,9 @@ curl -Ss http://www.workerman.net/check.php | php
         'start_port'=>"2900",                      // 内部通讯起始端口
         'heartbeat'=>10,                           // 心跳间隔时间，单位秒
         'heartbeat_data'=> '{"type":"ping"}',      // 心跳数据，可自定义，为json格式
-
         'default_server' => "Index",                // 客户端连接时，默认的消息处理类
         'default_action' => "index",                // 客户端连接时，默认的消息处理方法
-    )
+)
 ```
 
 # 使用教程
