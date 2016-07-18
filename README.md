@@ -36,6 +36,15 @@ curl -Ss http://www.workerman.net/check.php | php
         'default_action' => "index",               // 客户端连接时，默认的消息处理方法
 )
 ```
+## 编写入口文件
+> 在Publi目录下创建socket.php文件，代码内容如下
+``` php
+require_once dirname(__FILE__) . '/init.php';
+
+//装载你的接口
+DI()->loader->addDirs('Demo');
+```
+
 
 # 使用教程
 ## 启动或停止workman
