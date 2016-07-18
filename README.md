@@ -1,6 +1,7 @@
-# 运行环境
-## 基本环境
+# 准备工作
+## 基本运行环境
 > CentOS7、php7
+
 ## workman运行所需扩展
 ``` shell
 ## 检查环境
@@ -9,17 +10,16 @@ curl -Ss http://www.workerman.net/check.php | php
 如果不全是ok的话，可以参考下面这篇博客安装php7运行环境
 [Centos7安装nginx+php7运行环境](http://hanxv.cn/index.php/archives/19.html)
 
-# 使用教程
 ## 安装PhalApi-Workman扩展
-* 从github上下载PhalApi-Workman扩展
+* 从github上下载[PhalApi-Workman扩展](https://github.com/AxiosCros/PhalApi--Workman.git),
 * 拷贝Workman文件夹至PhalApi的Library目录下
-* 拷贝start_workman.php至PhalApi的根目录，与Demo同级
+* 拷贝start_workman.php文件至PhalApi的根目录，与Demo同级
 * 拷贝Server文件夹至接口项目目录中，与Domain等同级
 
 ## 设置配置文件
 > 打开Config下的app.php配置文件
-``` shell
-# 添加以下内容
+``` php
+//添加以下内容
     'workman'=>array(
         'app_name'=>"my_app",                      // 项目应用名称
         'socket_host'=>"tcp://0.0.0.0:1212",       // socket连接监听地址及端口
@@ -35,6 +35,7 @@ curl -Ss http://www.workerman.net/check.php | php
     )
 ```
 
+# 使用教程
 ## 启动或停止workman
 ``` shell
 #以debug（调试）方式启动
@@ -87,3 +88,7 @@ nohup [启动命令]
 }
 ```
  > 其中server是消息处理类的名称，action是类中方法的名称，data为传送的数据。
+
+ ## 服务端回调消息格式
+ > 消息格式自定义，在方法中回调就可以了
+ > 回调数据前，需调用setTarget(设置目标类型，0当前用户，1特定用户id，2多个用户，3全部在线用户),setClient(setTarget为0或3时，不用调用该方法，其余情况需调用该方法设置目标id)

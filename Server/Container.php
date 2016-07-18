@@ -24,9 +24,11 @@ class Server_Container extends Server_Common{
         return $this->response($result);
     }
     public function onConnect(){
-        $this->setTarget(0);
-        $data = "Hello";
-        return $this->response($data);
+        $data = array(
+            'client_id'    =>$this->CLIENT_ID,
+            'data'         =>array()
+        );
+        return $this->loadServerAction($data);
     }
     public function onMessage(){
         $data = array(
@@ -36,8 +38,12 @@ class Server_Container extends Server_Common{
         return $this->loadServerAction($data);
     }
     public function onClose(){
-        //连接断开时，可以执行清空缓存的方法
+        //连接断开时，执行清空缓存的方法
         //DI()->cache->delete($this->CLIENT_ID);
-        return ;
+        $data = array(
+            'client_id'    =>$this->CLIENT_ID,
+            'data'         =>array()
+        );
+        return $this->loadServerAction($data);
     }
 }
