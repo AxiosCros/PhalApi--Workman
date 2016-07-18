@@ -7,6 +7,6 @@
  */
 require_once dirname(__FILE__) . '/init.php';
 
-//装载你的接口
+//瑁呰浇浣犵殑鎺ュ彛
 DI()->loader->addDirs('Demo');
 
