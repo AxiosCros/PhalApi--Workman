@@ -29,8 +29,8 @@ curl -Ss http://www.workerman.net/check.php | php
         'start_port'=>"2900",                      // 内部通讯起始端口
         'heartbeat'=>10,                           // 心跳间隔时间，单位秒
         'heartbeat_data'=> '{"type":"ping"}',      // 心跳数据，可自定义，为json格式
-        'default_server' => "Index",                // 客户端连接时，默认的消息处理类
-        'default_action' => "index",                // 客户端连接时，默认的消息处理方法
+        'default_server' => "Index",               // 客户端连接时，默认的消息处理类
+        'default_action' => "index",               // 客户端连接时，默认的消息处理方法
 )
 ```
 
@@ -64,30 +64,29 @@ php start_workman.php kill
 #nohup启动
 nohup [启动命令]
 ```
-> debug和daemon方式区别
+
+ > debug和daemon方式区别
  * 以debug方式启动，代码中echo、var_dump、print等打印函数会直接输出在终端。
-
  * 以daemon方式启动，代码中echo、var_dump、print等打印会默认重定向到/dev/null文件，可以通过设置Worker::$stdoutFile = '/your/path/file';来设置这个文件路径。
-
  * 以debug方式启动，终端关闭后workerman会随之关闭并退出。
-
  * 以daemon方式启动，终端关闭后workerman继续后台正常运行。
  * 具体请参考[workman文档](http://doc3.workerman.net/install/start-and-stop.html)
 
 
 # 消息发送规则
 ## 客户端发送消息格式
-``` json
-{
+ ``` json
+ {
   "server": "",
   "action": "",
   "data": {
 
   },
-}
-```
+ }
+ ```
  > 其中server是消息处理类的名称，action是类中方法的名称，data为传送的数据。
 
- ## 服务端回调消息格式
+## 服务端回调消息格式
  > 消息格式自定义，在方法中回调就可以了
+ 
  > 回调数据前，需调用setTarget(设置目标类型，0当前用户，1特定用户id，2多个用户，3全部在线用户),setClient(setTarget为0或3时，不用调用该方法，其余情况需调用该方法设置目标id)
