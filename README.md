@@ -7,7 +7,7 @@
 
 ### workman运行所需扩展
 ``` shell
-## 检查环境
+# 检查环境
 curl -Ss http://www.workerman.net/check.php | php
 ```
 如果不全是ok的话，可以参考我的这篇博客安装php7运行环境
@@ -17,7 +17,7 @@ curl -Ss http://www.workerman.net/check.php | php
 * 从github上下载[PhalApi-Workman扩展](https://github.com/AxiosCros/PhalApi--Workman.git),
 * 拷贝Workman文件夹至PhalApi的Library目录下
 * 拷贝start_workman.php文件至PhalApi的根目录，与Demo同级
-* 拷贝Server文件夹至接口项目目录中，与Domain等同级
+* 拷贝Server文件夹至接口项目目录中，与Domain等同级(其中Common.php与Container.php为必备文件)
 
 ### 设置配置文件
 > 打开Config下的app.php配置文件
