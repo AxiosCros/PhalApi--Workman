@@ -22,11 +22,11 @@ class Server_Common{
     }
     
     protected function response($data){
-        $re = array(
-            'type'=>$this->TARGET,
-            'clients'=>$this->CLIENTS,
-            'data'=>$data
-        );
+        $re['type'] = empty($this->TARGET)? "present":$this->TARGET;
+        if(!($this->CLIENTS)){
+            $re['clients'] = $this->CLIENTS;
+        }
+        $re['data'] = $data;
         return $re;
     }
     protected function set($message=array()){
@@ -49,11 +49,12 @@ class Server_Common{
     }
 
     protected function setTarget($type="0"){
+        $type = strval($type);
         $this->TARGET = in_array($type,$this->message_type) ? $this->message_type[$type] : "present";
     }
 
     protected function setClient($client){
-        $this->TARGET = is_array($client) ? $client : array(0=>$client);
+        $this->CLIENTS = is_array($client) ? $client : array(0=>$client);
     }
     
 }

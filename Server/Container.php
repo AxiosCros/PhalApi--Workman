@@ -21,7 +21,7 @@ class Server_Container extends Server_Common{
             return "";
         }
         $result =  call_user_func_array(array($Server, $this->ACTION),$data);
-        return $this->response($result);
+        return $result;
     }
     public function onConnect(){
         $data = array(
