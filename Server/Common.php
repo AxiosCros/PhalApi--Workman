@@ -9,7 +9,7 @@
  */
 class Server_Common{
     protected $message_type,$config;
-    protected $CLIENT_ID,$SERVER ,$ACTION , $CLIENT_MSG;
+    protected $CLIENT_ID,$SERVER ,$ACTION , $CLIENT_MSG ,$MSG_DATA ;
     protected $TARGET , $CLIENTS=array() ;
     function __construct(){
         $this->message_type = array(
